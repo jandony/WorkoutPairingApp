@@ -14,29 +14,69 @@ import {
 } from 'react-native';
 import styled from "styled-components";
 import { MonoText } from '../components/StyledText';
+import customData from '../metObjects.json';
+// import sectionData from '../sectionObjects.json';
 
 const Contact = styled.Text`
-background-color: ${props => props.isActive ? 'blue': 'transparent'}
+backgroundColor: ${props => props.isActive ? 'red': 'transparent'}
+color: ${props => props.isActive ? 'white': 'black'}
 `
 
-
 export default class HomeScreen extends Component {
-      //state object
+ //state object
   state = { 
     selected: false,
     selectedItem: "",
-    selectedGroup: []
+    selectedGroup: [],
+    categories: [],
 };
 
+// componentDidMount() {
+    // var sectionData = [];
+
+    // console.log(customData);
+    
+    // customData.forEach(item => {
+    //     console.log(item.subcategory);
+
+        // var styledCategory = `<em>${item.category}</em>`;
+        // sectionData.push({title: item.title, });
+
+        // item.subcategories.forEach(sub => {
+        //     // console.log(`Subcategory: ${sub.subcategory}`);
+        //     sectionData.push(sub.subcategory);
+        // });
+    // });
+
+    // this.setState({categories: catArr});
+    // console.log(catArr);
+// }
+
+metSubCategories = () => {}
+
 onPress = person => {
-  var group = this.state.selectedGroup
+  var group = this.state.selectedGroup;
   group.push(person);
+
   this.setState({selectedItem: person});
   this.setState({selectedGroup: group});
   console.log(this.state.selectedGroup);
 
+//   console.log(customData[1].category);
+
 }
+
 render() {
+
+    var bicycling = ["Mountain", "General"];
+    var conditioningExercise = ["Stationary Biking", "Calisthenics (no equipment)", "Circuit Training", "Stair Steppers", "Jump Roping", "Rowing (water)", "Rowing (machine)", "Ski Machine", "Pilates"];
+    var jogging = ["Stationary Biking"];
+    var running = ["General", "4 mph (13 min/mile", "5 mph (12 min/mile)", "6 mph (10 min/mile)", "7 mph (8.5 min/mile)", "8 mph (7.5 min/mile)", "9 mph (6.5 min/mile)", "10 mph (6 min/mile)", "11 mph (5.5 min/mile)", "12 mph (5 min/mile)", "13 mph (4.5 min/mile)", "14 mph (4 min/mile)"];
+    var sports = ["Badminton", "Basketball", "Bowling", "Boxing", "Cheerleading", "Cricket", "Curling", "Football (Competitive)", "Golf", "Gymnastics", "Hockey", "Horseback Riding", "Martial Arts", "Lacrosse", "Moto-Cross", "Polo (Horseback", "Racquetball", "Rock/Mountain Climbing", "Skydiving", "Soccer", "Table Tennis", "Tai Chi", "Tennis", "Volleyball", "Wrestling"];
+    var walking = ["4 mph (13 min/mile"];
+    var waterActivities = ["Canoeing", "Diving", "Skiing", "Surfing", "Swimming (Laps", "Swimming (Backstroke)", "Swimming (Breaststroke)", "Swimming (Butterfly)"];
+    var winterActivities = ["Skating", "Skiing"];
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -55,14 +95,16 @@ render() {
 
         <SectionList style={{paddingBottom: 100}}
           sections={[
-            {title: 'A', data: ['Adam']},
-            {title: 'B', data: ['Brad']},
-            {title: 'C', data: ['Chris']},
-            {title: 'D', data: ['Devin']},
-            {title: 'E', data: ['Eva', 'Evan']},
-            {title: 'F', data: ['Frank', 'Fred']},
-            {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+              { title: 'Bicyling', data: bicycling },
+              { title: 'Conditioning Exercise', data: conditioningExercise },
+              { title: 'Jogging', data: jogging },
+              { title: 'Running', data: running },
+              { title: 'Sports', data: sports },
+              { title: 'Walking', data: walking },
+              { title: 'Water Activities', data: waterActivities },
+              { title: 'Winter Activities', data: winterActivities }
           ]}
+
           renderItem={({item}) => <Contact style={styles.item} isActive={this.state.selectedItem === item} onPress={() => this.onPress(item)}> {item} </Contact>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
@@ -219,6 +261,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     backgroundColor: 'rgba(247,247,247,1.0)',
+    textAlign: 'left',
   },
   item: {
     padding: 10,
