@@ -31,29 +31,6 @@ export default class HomeScreen extends Component {
     categories: [],
 };
 
-// componentDidMount() {
-    // var sectionData = [];
-
-    // console.log(customData);
-    
-    // customData.forEach(item => {
-    //     console.log(item.subcategory);
-
-        // var styledCategory = `<em>${item.category}</em>`;
-        // sectionData.push({title: item.title, });
-
-        // item.subcategories.forEach(sub => {
-        //     // console.log(`Subcategory: ${sub.subcategory}`);
-        //     sectionData.push(sub.subcategory);
-        // });
-    // });
-
-    // this.setState({categories: catArr});
-    // console.log(catArr);
-// }
-
-metSubCategories = () => {}
-
 onPress = person => {
   var group = this.state.selectedGroup;
   group.push(person);
@@ -66,16 +43,22 @@ onPress = person => {
 
 }
 
-render() {
+initData = () => {
+    
+    const sections = customData.map(section => {
+        const title = section.title;
+        const subcategories = [];
 
-    var bicycling = ["Mountain", "General"];
-    var conditioningExercise = ["Stationary Biking", "Calisthenics (no equipment)", "Circuit Training", "Stair Steppers", "Jump Roping", "Rowing (water)", "Rowing (machine)", "Ski Machine", "Pilates"];
-    var jogging = ["Stationary Biking"];
-    var running = ["General", "4 mph (13 min/mile", "5 mph (12 min/mile)", "6 mph (10 min/mile)", "7 mph (8.5 min/mile)", "8 mph (7.5 min/mile)", "9 mph (6.5 min/mile)", "10 mph (6 min/mile)", "11 mph (5.5 min/mile)", "12 mph (5 min/mile)", "13 mph (4.5 min/mile)", "14 mph (4 min/mile)"];
-    var sports = ["Badminton", "Basketball", "Bowling", "Boxing", "Cheerleading", "Cricket", "Curling", "Football (Competitive)", "Golf", "Gymnastics", "Hockey", "Horseback Riding", "Martial Arts", "Lacrosse", "Moto-Cross", "Polo (Horseback", "Racquetball", "Rock/Mountain Climbing", "Skydiving", "Soccer", "Table Tennis", "Tai Chi", "Tennis", "Volleyball", "Wrestling"];
-    var walking = ["4 mph (13 min/mile"];
-    var waterActivities = ["Canoeing", "Diving", "Skiing", "Surfing", "Swimming (Laps", "Swimming (Backstroke)", "Swimming (Breaststroke)", "Swimming (Butterfly)"];
-    var winterActivities = ["Skating", "Skiing"];
+        section.subcategories.forEach(subcategory => {
+          subcategories.push(subcategory.subcategory);
+        });
+        return { title: title, data: subcategories };
+    });
+
+    return sections
+}
+
+render() {
 
   return (
     <View style={styles.container}>
@@ -94,17 +77,7 @@ render() {
         </View>
 
         <SectionList style={{paddingBottom: 100}}
-          sections={[
-              { title: 'Bicyling', data: bicycling },
-              { title: 'Conditioning Exercise', data: conditioningExercise },
-              { title: 'Jogging', data: jogging },
-              { title: 'Running', data: running },
-              { title: 'Sports', data: sports },
-              { title: 'Walking', data: walking },
-              { title: 'Water Activities', data: waterActivities },
-              { title: 'Winter Activities', data: winterActivities }
-          ]}
-
+          sections={this.initData()}
           renderItem={({item}) => <Contact style={styles.item} isActive={this.state.selectedItem === item} onPress={() => this.onPress(item)}> {item} </Contact>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
