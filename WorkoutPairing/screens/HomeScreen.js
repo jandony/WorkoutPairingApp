@@ -14,29 +14,52 @@ import {
 } from 'react-native';
 import styled from "styled-components";
 import { MonoText } from '../components/StyledText';
+import customData from '../metObjects.json';
+// import sectionData from '../sectionObjects.json';
 
 const Contact = styled.Text`
-background-color: ${props => props.isActive ? 'blue': 'transparent'}
+backgroundColor: ${props => props.isActive ? 'red': 'transparent'}
+color: ${props => props.isActive ? 'white': 'black'}
 `
 
-
 export default class HomeScreen extends Component {
-      //state object
+ //state object
   state = { 
     selected: false,
     selectedItem: "",
-    selectedGroup: []
+    selectedGroup: [],
+    categories: [],
 };
 
 onPress = person => {
-  var group = this.state.selectedGroup
+  var group = this.state.selectedGroup;
   group.push(person);
+
   this.setState({selectedItem: person});
   this.setState({selectedGroup: group});
   console.log(this.state.selectedGroup);
 
+//   console.log(customData[1].category);
+
 }
+
+initData = () => {
+    
+    const sections = customData.map(section => {
+        const title = section.title;
+        const subcategories = [];
+
+        section.subcategories.forEach(subcategory => {
+          subcategories.push(subcategory.subcategory);
+        });
+        return { title: title, data: subcategories };
+    });
+
+    return sections
+}
+
 render() {
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -54,15 +77,7 @@ render() {
         </View>
 
         <SectionList style={{paddingBottom: 100}}
-          sections={[
-            {title: 'A', data: ['Adam']},
-            {title: 'B', data: ['Brad']},
-            {title: 'C', data: ['Chris']},
-            {title: 'D', data: ['Devin']},
-            {title: 'E', data: ['Eva', 'Evan']},
-            {title: 'F', data: ['Frank', 'Fred']},
-            {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-          ]}
+          sections={this.initData()}
           renderItem={({item}) => <Contact style={styles.item} isActive={this.state.selectedItem === item} onPress={() => this.onPress(item)}> {item} </Contact>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
@@ -219,6 +234,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     backgroundColor: 'rgba(247,247,247,1.0)',
+    textAlign: 'left',
   },
   item: {
     padding: 10,
