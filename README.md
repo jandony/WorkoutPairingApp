@@ -1,1 +1,1 @@
-# Workout-Pairing-App
+# WorkoutPairingApp
